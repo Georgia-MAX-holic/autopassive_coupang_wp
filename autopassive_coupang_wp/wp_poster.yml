@@ -1,0 +1,33 @@
+
+name: Post Coupang Picks
+
+on:
+  schedule:
+    - cron: "10 */12 * * *"   # every 12 hours (UTC)
+  workflow_dispatch: {}
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install deps
+        run: pip install -r requirements.txt
+
+      - name: Run poster
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASS: ${{ secrets.WP_APP_PASS }}
+          COUPANG_DEEPLINK_PREFIX: ${{ secrets.COUPANG_DEEPLINK_PREFIX }}
+          COUPANG_SUB_ID: ${{ secrets.COUPANG_SUB_ID }}
+          POSTS_PER_RUN: ${{ vars.POSTS_PER_RUN }}
+          PUBLISH_MODE: publish
+        run: python programmatic_coupang_wp_poster.py
