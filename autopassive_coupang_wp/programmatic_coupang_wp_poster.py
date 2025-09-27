@@ -3,6 +3,8 @@ import os, html, json, urllib.parse
 from datetime import datetime, timedelta, timezone
 import pandas as pd
 import requests
+from dotenv import load_dotenv
+load_dotenv()
 
 WP_URL = os.getenv("WP_URL", "").rstrip("/")
 WP_USER = os.getenv("WP_USER", "")
